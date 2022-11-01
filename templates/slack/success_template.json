@@ -1,5 +1,5 @@
 {
-  "text": "GitHub Action build result: ${{ inputs.JOB_STATUS }}",
+  "text": "GitHub Action build result:{{ github.inputs.JOB_STATUS }}",
   "blocks": [
     {
       "type": "header",
@@ -14,11 +14,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*User*\n ${{ inputs.GITHUB_USER }}"
+          "text": "*User*\n{{ github.inputs.GITHUB_USER }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Status:*\n ${{ inputs.JOB_STATUS }}"
+          "text": "*Status:*\n{{ github.inputs.JOB_STATUS }}"
         }
       ]
     },
@@ -27,11 +27,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*App*\n ${{ inputs.DISPLAY_NAME }}"
+          "text": "*App*\n{{ github.inputs.DISPLAY_NAME }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Version:*\n ${{ inputs.VERSION }}"
+          "text": "*Version:*\n{{ github.inputs.VERSION }}"
         }
       ]
     },
@@ -40,11 +40,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*Repo*\n ${{ inputs.GITHUB_REPOSITORY }}"
+          "text": "*Repo*\n{{ github.inputs.GITHUB_REPOSITORY }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Branch:*\n ${{ inputs.GITHUB_BRANCH }}"
+          "text": "*Branch:*\n{{ github.inputs.GITHUB_BRANCH }}"
         }
       ]
     },
