@@ -14,7 +14,7 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*User*\n{{ github.inputs.GITHUB_USER }}"
+          "text": "*User*\n{{ github.inputs.GITHUB_USER }} {{github.inputs.GITHUB_USER}} {{github}} {{github.inputs}}"
         },
         {
           "type": "mrkdwn",
