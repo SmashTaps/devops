@@ -7,10 +7,16 @@ on:
         type: string
       VERSION:
         type: string
+      JOB_STATUS:
+        type: string
+      GITHUB_USER:
+        type: string
+      GITHUB_REPOSITORY:
+        type: string
+      GITHUB_BRANCH:
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
-        required: true
-      GITHUB:
         required: true
 
 jobs:
