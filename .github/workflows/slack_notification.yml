@@ -15,9 +15,10 @@ jobs:
   send_slack_notification:
     runs-on: ubuntu-latest
     steps:
+      - uses: slackapi/slack-github-action@v1.23.0
       - name: Send custom JSON data to Slack workflow
         id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: actions/checkout@v2
         with:
           payload-file-path: "./templates/slack/success.json"
         env:
