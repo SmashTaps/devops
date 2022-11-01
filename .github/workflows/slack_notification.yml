@@ -3,7 +3,7 @@ name: Slack Notification Workflow
 on:
   workflow_call:
     secrets:
-      SLACK_WEBHOOK_URL:
+      SMASHTAPS_SLACK_WEBHOOK_URL:
         required: true
 
 jobs:
