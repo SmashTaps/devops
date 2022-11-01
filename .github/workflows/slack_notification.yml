@@ -26,15 +26,36 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
+          
       - uses: actions/checkout@v2
         with:
           repository: smashtaps/devops
           ref: main
+          
+      - name: Read package.json
+        id: slack_template_file
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./templates/slack/success_template.json
+          
+      - name: Prepare Slack Template
+        id: slack_template
+        env:
+          JOB_STATUS: ${{ inputs.JOB_STATUS }}
+          GITHUB_USER: ${{ inputs.GITHUB_USER }}
+          DISPLAY_NAME: ${{ inputs.DISPLAY_NAME }}
+          VERSION: ${{ inputs.VERSION }}
+          GITHUB_REPOSITORY: ${{ inputs.GITHUB_REPOSITORY }}
+          GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
+        uses: AndreasNel/string-vars-action@master
+        with:
+          instring: ${{ steps.slack_template_file.outputs.content }}
+          
       - name: Send custom JSON data to Slack workflow
         uses: slackapi/slack-github-action@v1.23.0
         id: slack
         with:
-          payload-file-path: "templates/slack/success_template.json"
+          payload: ${{ steps.slack_template.outputs.outstring }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
