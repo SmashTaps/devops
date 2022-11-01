@@ -1,5 +1,5 @@
 {
-  "text": "GitHub Action build result: {JOB_STATUS}",
+  "text": "GitHub Action build result: ${{ job.status }}",
   "blocks": [
     {
       "type": "header",
@@ -14,11 +14,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*User*\n{GITHUB_USER}"
+          "text": "*User*\n${{ github.actor }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Status:*\n{JOB_STATUS}"
+          "text": "*Status:*\n${{ job.status }}"
         }
       ]
     },
@@ -27,11 +27,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*App*\n{DISPLAY_NAME}"
+          "text": "*App*\n${{ inputs.DISPLAY_NAME }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Version:*\n{VERSION}"
+          "text": "*Version:*\n${{ inputs.VERSION }}"
         }
       ]
     },
@@ -40,11 +40,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*Repo*\n{GITHUB_REPOSITORY}"
+          "text": "*Repo*\n${{ github.repository }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Branch:*\n{GITHUB_BRANCH}"
+          "text": "*Branch:*\n${{ github.ref_name }}"
         }
       ]
     },
