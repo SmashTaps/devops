@@ -8,7 +8,7 @@ on:
       VERSION:
         type: string
     secrets:
-      SMASHTAPS_SLACK_WEBHOOK_URL:
+      SLACK_WEBHOOK_URL:
         required: true
 
 jobs:
@@ -25,5 +25,5 @@ jobs:
         with:
           payload-file-path: "./templates/slack/success.json"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SMASHTAPS_SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
