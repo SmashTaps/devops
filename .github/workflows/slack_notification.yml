@@ -10,7 +10,7 @@ on:
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
-      JOB:
+      GITHUB:
         required: true
 
 jobs:
