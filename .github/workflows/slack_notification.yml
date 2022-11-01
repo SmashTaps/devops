@@ -18,10 +18,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: slackapi/slack-github-action@v1.23.0
+      - uses: actions/checkout@v2
       - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.23.0
         id: slack
-        uses: actions/checkout@v2
         with:
           payload-file-path: "./templates/slack/success.json"
         env:
