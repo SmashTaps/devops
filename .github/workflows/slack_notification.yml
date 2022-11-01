@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: "16.x"
       - uses: actions/checkout@v2
+        with:
+          repository: smashtaps/devops
+          ref: main
       - name: Send custom JSON data to Slack workflow
         uses: slackapi/slack-github-action@v1.23.0
         id: slack
