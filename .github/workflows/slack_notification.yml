@@ -15,13 +15,6 @@ jobs:
   send_slack_notification:
     runs-on: ubuntu-latest
     steps:
-      - name: Read package.json
-        id: read_property
-        uses: Muchaszewski/read-json-action@1.0.0
-        with:
-          path: "package.json"
-          properties: "displayName, version"
-
       - name: Send custom JSON data to Slack workflow
         id: slack
         uses: slackapi/slack-github-action@v1.23.0
