@@ -10,6 +10,8 @@ on:
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
+      JOB:
+        required: true
 
 jobs:
   send_slack_notification:
