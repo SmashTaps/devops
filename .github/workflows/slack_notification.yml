@@ -2,6 +2,11 @@ name: Slack Notification Workflow
 
 on:
   workflow_call:
+    inputs:
+      DISPLAY_NAME:
+        type: string
+      VERSION:
+        type: string
     secrets:
       SMASHTAPS_SLACK_WEBHOOK_URL:
         required: true
