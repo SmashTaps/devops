@@ -1,5 +1,5 @@
 {
-  "text": "GitHub Action build result: {{ secrets.JOB.status }}",
+  "text": "GitHub Action build result: {{ inputs.JOB_STATUS }}",
   "blocks": [
     {
       "type": "header",
@@ -14,11 +14,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*User*\n{{ inputs.github.actor }}"
+          "text": "*User*\n{{ inputs.GITHUB_USER }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Status:*\n{{ inputs.job.status }}"
+          "text": "*Status:*\n{{ inputs.JOB_STATUS }}"
         }
       ]
     },
@@ -40,11 +40,11 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*Repo*\n{{ inputs.github.repository }}"
+          "text": "*Repo*\n{{ inputs.GITHUB_REPOSITORY }}"
         },
         {
           "type": "mrkdwn",
-          "text": "*Branch:*\n{{ inputs.github.ref_name }}"
+          "text": "*Branch:*\n{{ inputs.GITHUB_BRANCH }}"
         }
       ]
     },
