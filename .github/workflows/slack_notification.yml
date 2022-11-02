@@ -63,8 +63,8 @@ jobs:
         env:
           JOB_STATUS: ${{ inputs.JOB_STATUS }}
           GITHUB_USER: ${{ inputs.GITHUB_USER }}
-          DISPLAY_NAME: ${{ needs.read_package.outputs.displayName }}
-          VERSION: ${{ needs.read_package.outputs.version }}
+          DISPLAY_NAME: ${{ needs.read_package_json.outputs.displayName }}
+          VERSION: ${{ needs.read_package_json.outputs.version }}
           GITHUB_REPOSITORY: ${{ inputs.GITHUB_REPOSITORY }}
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
