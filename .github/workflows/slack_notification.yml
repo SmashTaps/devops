@@ -21,6 +21,7 @@ on:
 
 jobs:
   read_package_json:
+    name: Read Package JSON
     runs-on: ubuntu-latest
     outputs:
       displayName: ${{ steps.read_package.outputs.displayName }}
@@ -36,6 +37,7 @@ jobs:
           properties: "displayName, version"
   
   send_slack_notification:
+    name: Send Slack Notification
     runs-on: ubuntu-latest
     needs: read_package_json
     steps:
@@ -67,7 +69,7 @@ jobs:
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
         with:
-          instring: ${{ steps.slack_template_file.outputs.content }}
+          instring: ${{ steps.slack_success_template_file.outputs.content }}
           
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
