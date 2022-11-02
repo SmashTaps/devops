@@ -20,20 +20,37 @@ on:
         required: true
 
 jobs:
+  read_package_json:
+    runs-on: ubuntu-latest
+    outputs:
+      displayName: ${{ steps.read_package.outputs.displayName }}
+      version: ${{ steps.read_package.outputs.version }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Read package json
+        uses: Muchaszewski/read-json-action@1.0.0
+        id: read_package
+        with:
+          path: "package.json"
+          properties: "displayName, version"
+  
   send_slack_notification:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2
+      - name: Setup Ndde environment
+        uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          
-      - uses: actions/checkout@v2
+        
+      - name: Check out devops repo
+        uses: actions/checkout@v2
         with:
           repository: smashtaps/devops
           ref: main
           
-      - name: Read package.json
-        id: slack_template_file
+      - name: Read Slack notification success template
+        id: slack_success_template_file
         uses: juliangruber/read-file-action@v1
         with:
           path: ./templates/slack/success_template.json
@@ -43,15 +60,15 @@ jobs:
         env:
           JOB_STATUS: ${{ inputs.JOB_STATUS }}
           GITHUB_USER: ${{ inputs.GITHUB_USER }}
-          DISPLAY_NAME: ${{ inputs.DISPLAY_NAME }}
-          VERSION: ${{ inputs.VERSION }}
+          DISPLAY_NAME: ${{ jobs.read_package.outputs.displayName }}
+          VERSION: ${{ jobs.read_package.outputs.version }}
           GITHUB_REPOSITORY: ${{ inputs.GITHUB_REPOSITORY }}
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
         with:
           instring: ${{ steps.slack_template_file.outputs.content }}
           
-      - name: Send custom JSON data to Slack workflow
+      - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
         id: slack
         with:
