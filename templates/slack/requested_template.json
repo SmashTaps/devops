@@ -1,1 +1,87 @@
+{
+  "text": "GitHub Action: {JOB_STATUS}",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "New deployment has been started! 🚀",
+        "emoji": true
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*User*\n{GITHUB_USER}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Status:*\n{JOB_STATUS}"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*App*\n{DISPLAY_NAME}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Version:*\n{VERSION}"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Repo*\n{GITHUB_REPOSITORY}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Branch:*\n{GITHUB_BRANCH}"
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "You guys did an amazing job!👏👏👏 \nDiplo will update you regarding this deployment."
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Stay tuned homies..."
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "image",
+          "image_url": "https://smashtaps-web-assets.netlify.com/img/favicon.png",
+          "alt_text": "Smasht Taps Logo"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Diplo* by Smashtaps DevOps"
+        }
+      ]
+    }
+  ]
+}
 
