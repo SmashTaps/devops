@@ -53,10 +53,25 @@ jobs:
           ref: main
           
       - name: Read Slack notification success template
+        id: slack_requested_template_file
+        if: ${{ inputs.JOB_STATUS == 'Requested' }}
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./templates/slack/requested_template.json
+          
+      - name: Read Slack notification success template
         id: slack_success_template_file
+        if: ${{ inputs.JOB_STATUS == 'Success' }}
         uses: juliangruber/read-file-action@v1
         with:
           path: ./templates/slack/success_template.json
+          
+      - name: Read Slack notification success template
+        id: slack_failure_template_file
+        if: ${{ inputs.JOB_STATUS == 'Failure' }}
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./templates/slack/failure_template.json
           
       - name: Prepare Slack Template
         id: slack_template
