@@ -74,6 +74,7 @@ jobs:
           path: ./templates/slack/failure_template.json
           
       - name: Get Slack Notification Template
+        shell: bash
         id: raw_slack_template
         run: |
           if [ "${{ steps.slack_success_template_file.outputs.content != ''}}" == "true" ]
@@ -88,6 +89,7 @@ jobs:
           fi
       
       - name: verify file content
+        shell: bash
         run: echo ${{steps.raw_slack_template.outputs.content}}
     
       - name: Prepare Slack Template
