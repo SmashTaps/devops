@@ -80,6 +80,7 @@ jobs:
           if [ '${{ inputs.JOB_STATUS }}' == 'Success' ]
           then
             echo 'SLACK_CONTENT=${{toJSON(steps.slack_requested_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
+          fi
           
       - name: verify file content
         shell: bash
