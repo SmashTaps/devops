@@ -86,7 +86,7 @@ jobs:
             content=${{toJSON(steps.slack_failure_template_file.outputs.content)}}
           elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
           then
-            content=toJSON(${{steps.slack_requested_template_file.outputs.content)}}
+            content=${{toJSON(steps.slack_requested_template_file.outputs.content)}}
           fi
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
