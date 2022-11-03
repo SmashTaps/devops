@@ -86,7 +86,7 @@ jobs:
             echo 'content=${{toJSON(steps.slack_failure_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
           elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
           then
-            echo 'content=${{toJSON(steps.slack_requested_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
+            echo 'content=roshan' >> $GITHUB_OUTPUT
           fi
           
       - name: verify file content
