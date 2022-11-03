@@ -77,17 +77,21 @@ jobs:
         shell: bash
         id: raw_slack_template
         run: |
+          content=''
           if [ "${{ steps.slack_success_template_file.outputs.content != ''}}" == "true" ]
           then
-            echo 'content=${{steps.slack_success_template_file.outputs.content}}' >> $GITHUB_ENV
+            content=${{steps.slack_success_template_file.outputs.content}}
           elif [ "${{ steps.slack_failure_template_file.outputs.content != ''}}" != "true" ]
           then
-            echo 'content=${{steps.slack_failure_template_file.outputs.content}}' >> $GITHUB_ENV
+            content=${{steps.slack_failure_template_file.outputs.content}}
           elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
           then
-            echo 'content=${{steps.slack_requested_template_file.outputs.content}}' >> $GITHUB_ENV
+            content=${{steps.slack_requested_template_file.outputs.content}}
           fi
-          cat $GITHUB_ENV
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo 'content=$content' >> $GITHUB_OUTPUT
       
       - name: verify file content
         shell: bash
