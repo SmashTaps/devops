@@ -64,7 +64,14 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "🤖 Beep boop beep...\nHouston, We Have a Problem!🦺🛠️🩺🚑🛟🚧\nDiplo encountered some issues while deploying. I need my heroes immediate attention!!!"
+        "text": "🤖 Beep boop beep..."
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Houston, We Have a Problem!🦺🛠️🩺🚑🛟🚧\nDiplo encountered some issues while deploying. I need my heroes immediate attention!!!"
       }
     },
     {
