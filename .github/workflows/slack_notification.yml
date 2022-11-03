@@ -108,7 +108,7 @@ jobs:
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
         with:
-          instring: ${{ steps.raw_slack_template.outputs.content }}
+          instring: ${{ fromJSON(steps.raw_slack_template.outputs.content) }}
           
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
