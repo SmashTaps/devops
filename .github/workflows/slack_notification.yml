@@ -77,17 +77,7 @@ jobs:
         shell: bash
         id: raw_slack_template
         run: |
-          content=''
-          if [ "${{ steps.slack_success_template_file.outputs.content != ''}}" == "true" ]
-          then
-            echo 'content=${{toJSON(steps.slack_success_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
-          elif [ "${{ steps.slack_failure_template_file.outputs.content != ''}}" != "true" ]
-          then
-            echo 'SLACK_CONTENT=${{toJSON(steps.slack_failure_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
-          elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
-          then
             echo 'SLACK_CONTENT=roshan' >> $GITHUB_OUTPUT
-          fi
           
       - name: verify file content
         shell: bash
