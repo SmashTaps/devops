@@ -90,7 +90,7 @@ jobs:
       
       - name: verify file content
         shell: bash
-        run: echo ${{steps.raw_slack_template.outputs.content}}
+        run: echo ${{steps.raw_slack_template.outputs.*}}
     
       - name: Prepare Slack Template
         id: slack_template
