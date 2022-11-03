@@ -77,7 +77,7 @@ jobs:
         shell: bash
         id: raw_slack_template
         run: |
-          if [ '${{ inputs.JOB_STATUS }}' == 'Success' ]
+          if [ '${{ inputs.JOB_STATUS }}' == 'Requested' ]
           then
             echo 'SLACK_CONTENT=${{toJSON(steps.slack_requested_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
           fi
