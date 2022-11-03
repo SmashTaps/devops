@@ -77,7 +77,9 @@ jobs:
         shell: bash
         id: raw_slack_template
         run: |
-          echo 'SLACK_CONTENT=${{toJSON(steps.slack_requested_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
+          if [ '${{ inputs.JOB_STATUS }}' == 'Success' ]
+          then
+            echo 'SLACK_CONTENT=${{toJSON(steps.slack_requested_template_file.outputs.content)}}' >> $GITHUB_OUTPUT
           
       - name: verify file content
         shell: bash
@@ -94,13 +96,13 @@ jobs:
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
         with:
-          instring: ${{ fromJSON(steps.raw_slack_template.outputs.content) }}
+          instring: ${{ steps.raw_slack_template.outputs.content }}
           
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
         id: slack
         with:
-          payload: ${{ steps.slack_template.outputs.outstring }}
+          payload: ${{ fromJSON(steps.slack_template.outputs.outstring) }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
