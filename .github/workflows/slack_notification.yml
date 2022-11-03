@@ -52,21 +52,21 @@ jobs:
           repository: smashtaps/devops
           ref: main
           
-      - name: Read Slack notification success template
+      - name: Read Slack notification Requested template
         id: slack_requested_template_file
         if: ${{ inputs.JOB_STATUS == 'Requested' }}
         uses: juliangruber/read-file-action@v1
         with:
           path: ./templates/slack/requested_template.json
           
-      - name: Read Slack notification success template
+      - name: Read Slack notification Success template
         id: slack_success_template_file
         if: ${{ inputs.JOB_STATUS == 'Success' }}
         uses: juliangruber/read-file-action@v1
         with:
           path: ./templates/slack/success_template.json
           
-      - name: Read Slack notification success template
+      - name: Read Slack notification Failure template
         id: slack_failure_template_file
         if: ${{ inputs.JOB_STATUS == 'Failure' }}
         uses: juliangruber/read-file-action@v1
