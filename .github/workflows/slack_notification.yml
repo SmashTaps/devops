@@ -80,13 +80,13 @@ jobs:
           content=''
           if [ "${{ steps.slack_success_template_file.outputs.content != ''}}" == "true" ]
           then
-            content=${{steps.slack_success_template_file.outputs.content}}
+            content='${{steps.slack_success_template_file.outputs.content}}'
           elif [ "${{ steps.slack_failure_template_file.outputs.content != ''}}" != "true" ]
           then
-            content=${{steps.slack_failure_template_file.outputs.content}}
+            content='${{steps.slack_failure_template_file.outputs.content}}'
           elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
           then
-            content=${{steps.slack_requested_template_file.outputs.content}}
+            content='${{steps.slack_requested_template_file.outputs.content}}'
           fi
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
