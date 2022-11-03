@@ -1,11 +1,11 @@
 {
-  "text": "GitHub Action build result:{JOB_STATUS}",
+  "text": "GitHub Action: {JOB_STATUS}",
   "blocks": [
     {
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "New deployment has been started! 🚀",
+        "text": "[{DEV_ENV}] New deployment has been started! 🚀",
         "emoji": true
       }
     },
@@ -14,7 +14,7 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*User*\n{GITHUB_USER}"
+          "text": "*Environment*\n{DEV_ENV}"
         },
         {
           "type": "mrkdwn",
@@ -45,6 +45,15 @@
         {
           "type": "mrkdwn",
           "text": "*Branch:*\n{GITHUB_BRANCH}"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*User*\n{GITHUB_USER}"
         }
       ]
     },
