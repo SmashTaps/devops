@@ -87,6 +87,7 @@ jobs:
           then
             echo 'content=${{steps.slack_requested_template_file.outputs.content}}' >> $GITHUB_ENV
           fi
+          cat $GITHUB_ENV
       
       - name: verify file content
         shell: bash
