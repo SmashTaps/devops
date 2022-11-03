@@ -5,7 +5,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "[{DEV_ENV}] New deployment has been started! 🚀",
+        "text": "📢 [{DEV_ENV}] New deployment has been started! ⌛",
         "emoji": true
       }
     },
@@ -64,7 +64,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "You guys did an amazing job!👏👏👏 \nDiplo will update you regarding this deployment."
+        "text": "🤖 Beep boop beep...\nYou guys did an amazing job!👏👏👏 \nDiplo will update you regarding this deployment."
       }
     },
     {
