@@ -80,13 +80,13 @@ jobs:
           content=''
           if [ "${{ steps.slack_success_template_file.outputs.content != ''}}" == "true" ]
           then
-            content='${{steps.slack_success_template_file.outputs.content}}'
+            content=${{toJSON(steps.slack_success_template_file.outputs.content)}}
           elif [ "${{ steps.slack_failure_template_file.outputs.content != ''}}" != "true" ]
           then
-            content='${{steps.slack_failure_template_file.outputs.content}}'
+            content=${{toJSON(steps.slack_failure_template_file.outputs.content)}}
           elif [ "${{ steps.slack_requested_template_file.outputs.content != ''}}" != "true" ]
           then
-            content='${{steps.slack_requested_template_file.outputs.content}}'
+            content=toJSON(${{steps.slack_requested_template_file.outputs.content)}}
           fi
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
@@ -95,7 +95,7 @@ jobs:
       
       - name: verify file content
         shell: bash
-        run: echo ${{env.content}}
+        run: echo ${{ toJSON(steps.raw_slack_template.outputs.content) }}
     
       - name: Prepare Slack Template
         id: slack_template
