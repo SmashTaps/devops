@@ -64,7 +64,14 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "🤖 Beep boop beep...\nYou guys did an amazing job!👏👏👏 \nDiplo will update you regarding this deployment."
+        "text": "🤖 Beep boop beep..."
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "You guys did an amazing job!👏👏👏 \nDiplo will update you regarding this deployment."
       }
     },
     {
