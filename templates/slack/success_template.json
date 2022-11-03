@@ -18,7 +18,7 @@
         },
         {
           "type": "mrkdwn",
-          "text": "*Status:*\n{JOB_STATUS}"
+          "text": "*Status:*\n{JOB_STATUS} 🟢"
         }
       ]
     },
@@ -71,7 +71,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "Weldone guys! \nDiployment was a success. It's time to celebrate!"
+        "text": "Weldone guys! \nDiployment was a success🥳🙌🥂🎆. It is time to celebrate!"
       }
     },
     {
