@@ -73,6 +73,20 @@ jobs:
         with:
           path: ./templates/slack/failure_template.json
           
+      - name: Get Slack Notification Template
+        id: raw_slack_template
+        run: |
+          if [${{ steps.slack_success_template_file.outputs.content !== '' }}]
+          then
+            echo "content=${{steps.slack_success_template_file.outputs.content}}" >> $GITHUB_OUTPUT
+          if [${{ steps.slack_failure_template_file.outputs.content !== '' }}]
+          then
+            echo "content=${{steps.slack_failure_template_file.outputs.content}}" >> $GITHUB_OUTPUT
+          if [${{ steps.slack_requested_template_file.outputs.content !== '' }}]
+          then
+            echo "content=${{steps.slack_requested_template_file.outputs.content}}" >> $GITHUB_OUTPUT
+          fi
+          
       - name: Prepare Slack Template
         id: slack_template
         env:
@@ -84,7 +98,7 @@ jobs:
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
         uses: AndreasNel/string-vars-action@master
         with:
-          instring: ${{ steps.slack_success_template_file.outputs.content }}
+          instring: ${{ steps.raw_slack_template.outputs.content }}
           
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
