@@ -81,12 +81,12 @@ jobs:
         run: |
           if [ '${{ inputs.JOB_STATUS }}' == 'Requested' ]
           then
-            echo << "EOF"
+            cat << "EOF"
               SLACK_CONTENT=${{toJSON(steps.slack_requested_template_file.outputs.content)}}
               EOF > $GITHUB_OUTPUT
           elif [ '${{ inputs.JOB_STATUS }}' == 'Success' ]
           then
-            echo << "EOF"
+            cat << "EOF"
               SLACK_CONTENT=${{toJSON(steps.slack_success_template_file.outputs.content)}}
               EOF > $GITHUB_OUTPUT
           elif [ '${{ inputs.JOB_STATUS }}' == 'Failure' ]
