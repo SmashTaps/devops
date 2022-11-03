@@ -76,13 +76,13 @@ jobs:
       - name: Get Slack Notification Template
         id: raw_slack_template
         run: |
-          if [${{ steps.slack_success_template_file.outputs.content !== '' }}]
+          if [${{ steps.slack_success_template_file.outputs.content != '' }}]
           then
             echo "content=${{steps.slack_success_template_file.outputs.content}}" >> $GITHUB_OUTPUT
-          if [${{ steps.slack_failure_template_file.outputs.content !== '' }}]
+          if [${{ steps.slack_failure_template_file.outputs.content != '' }}]
           then
             echo "content=${{steps.slack_failure_template_file.outputs.content}}" >> $GITHUB_OUTPUT
-          if [${{ steps.slack_requested_template_file.outputs.content !== '' }}]
+          if [${{ steps.slack_requested_template_file.outputs.content != '' }}]
           then
             echo "content=${{steps.slack_requested_template_file.outputs.content}}" >> $GITHUB_OUTPUT
           fi
