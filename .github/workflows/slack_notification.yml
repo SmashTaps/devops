@@ -18,7 +18,7 @@ on:
       DEV_ENV:
         type: string
       JOB_NO:
-        type: number
+        type: string
       ENVIRONMENT:
         type: string
     secrets:
