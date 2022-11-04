@@ -5,7 +5,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "📢 [{DEV_ENV}] Deployment has failed! ⛔",
+        "text": "📢 [{DEV_ENV}][#{JOB_NO}] Deployment has failed! ⛔",
         "emoji": true
       }
     },
@@ -97,6 +97,9 @@
           "text": "*Diplo* by Smashtaps DevOps"
         }
       ]
+    },
+    {
+      "type": "divider"
     }
   ]
 }
