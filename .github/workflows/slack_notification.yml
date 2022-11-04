@@ -17,6 +17,10 @@ on:
         type: string
       DEV_ENV:
         type: string
+      JOB_NO:
+        type: number
+      ENVIRONMENT:
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -42,6 +46,7 @@ jobs:
     name: Send Slack Notification
     needs: [read_package_json]
     runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - name: Setup Ndde environment
         uses: actions/setup-node@v2
@@ -104,6 +109,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ inputs.GITHUB_REPOSITORY }}
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
           DEV_ENV: ${{ inputs.DEV_ENV }}
+          JOB_NO: ${{ inputs.JOB_NO }}
         uses: AndreasNel/string-vars-action@master
         with:
           instring: ${{ steps.raw_slack_template.outputs.SLACK_CONTENT }}
