@@ -109,7 +109,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ inputs.GITHUB_REPOSITORY }}
           GITHUB_BRANCH: ${{ inputs.GITHUB_BRANCH }}
           DEV_ENV: ${{ inputs.DEV_ENV }}
-          JOB_NO: ${{ inputs.JOB_NO }}
+          JOB_NO: ${{ env.GITHUB_RUN_NUMBER }}
         uses: AndreasNel/string-vars-action@master
         with:
           instring: ${{ steps.raw_slack_template.outputs.SLACK_CONTENT }}
