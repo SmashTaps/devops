@@ -5,7 +5,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "📢 [{DEV_ENV}] Deployment completed! 🎉",
+        "text": "📢 [{DEV_ENV}][#{JOB_NO}] Deployment completed! 🎉",
         "emoji": true
       }
     },
@@ -71,7 +71,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "Weldone guys! \nDiployment was a success🥳🙌🥂🎆. It is time to celebrate!"
+        "text": "Weldone guys! \nDeployment was a success🥳🙌🥂🎆. It is time to celebrate!"
       }
     },
     {
@@ -97,6 +97,9 @@
           "text": "*Diplo* by Smashtaps DevOps"
         }
       ]
+    },
+    {
+      "type": "divider"
     }
   ]
 }
