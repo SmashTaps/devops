@@ -22,7 +22,7 @@
 
 ### Make Gradle executable
 
-  Some Linux environments, Gradle is not executable by default. Just in case We make sure it's execuatable.
+  Some Linux environments, Gradle is not executable by default. Just in case We make sure it's executable.
 
 ### Generating the Android release build
 
@@ -31,8 +31,8 @@
   - _ANDROID_SIGNING_ALIAS_ : Alias name you provide when you create the `Key`.
   - _ANDROID_SIGNING_STORE_PASSWORD_ : Password you provide as store password when you create the `Key`.
   - _ANDROID_SIGNING_KEY_PASSWORD_ : Password you provide as key password when you create the `Key`.
-  - _ANDROID_SIGNING_KEY_ : Base 64 encorded `signing key` In order to convert your releaseKey.jks to base64 encoded one you gonna need `Openssl`.
-    wirh below command you can create your base64encoded key file.
+  - _ANDROID_SIGNING_KEY_ : Base 64 encoded `signing key` In order to convert your releaseKey.jks to base64 encoded one you gonna need `Openssl`.
+    with below command you can create your base64encoded key file.
 
          openssl base64 < some_signing_key.jks | tr -d '\n' | tee some_signing_key.jks.base64.txt 
 
@@ -43,8 +43,8 @@
    We will save your signed artifact as a backup.
 
 ### Deploy to Play Store
-  
-   Before we do that we need to setting up the Google Play Developer API and attaching it with Play Console. You can follw [this guide](https://developers.google.com/android-publisher/getting_started) in order to complete it.
+
+   Before we do that we need to setting up the Google Play Developer API and attaching it with Play Console. You can follow [this guide](https://developers.google.com/android-publisher/getting_started) in order to complete it.
     Also We use this [this plugin](https://github.com/r0adkll/upload-google-play) for this. you can refer it's documentation as well.
 
   - _ANDROID_SERVICE_ACCOUNT_ : Go to [Google Cloud](https://console.cloud.google.com/) page and select `Service Accounts` then select your account then select `KEYS` Tab there you can see `ADD KEY` button. Add Key with Json format. Then you will get a file. save content of this file as `ANDROID_SERVICE_ACCOUNT` in secrets.
