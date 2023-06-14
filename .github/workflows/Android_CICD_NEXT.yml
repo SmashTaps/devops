@@ -73,7 +73,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
 
-      - run: echo "${{ secrets.PROJECT_NAME }}-iOS build has been successfully deployed to TestFlight 🎉"
+      - run: echo "${{ secrets.PROJECT_NAME }}-Android build has been successfully deployed to Play store console 🎉"
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Notify deploy to Rollbar
         uses: rollbar/github-deploy-action@2.1.1
