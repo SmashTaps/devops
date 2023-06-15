@@ -24,17 +24,20 @@ jobs:
         run: |
           yarn install
 
-      #   - name: Setup JDK
-      #     uses: actions/setup-java@v1
-      #     with:
-      #       java-version: 16
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
+          ruby-version: 2.7.2
           bundler-cache: true
-          working-directory: 'android'
+          working-directory: "android"
 
       - name: Install Fastlane
         run: |
@@ -45,18 +48,18 @@ jobs:
         uses: timheuer/base64-to-file@v1.2
         id: service_account_json_file
         with:
-          fileName: 'serviceAccount.json'
+          fileName: "serviceAccount.json"
           encodedString: ${{ secrets.GPLAY_SERVICE_ACCOUNT_KEY_JSON }}
 
       #   - name: Generate private-decoded-key.json file
       #     run: echo ${{ secrets.GPLAY_SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > /home/runner/work/${{ secrets.PROJECT_NAME }}/${{ secrets.PROJECT_NAME }}/service_account_key.json
 
-      - name: Decode Keystore File
-        uses: timheuer/base64-to-file@v1.2
-        id: release_keystore
-        with:
-          fileName: 'keystore.jks'
-          encodedString: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+      # - name: Decode Keystore File
+      #   uses: timheuer/base64-to-file@v1.2
+      #   id: release_keystore
+      #   with:
+      #     fileName: 'keystore.jks'
+      #     encodedString: ${{ secrets.ANDROID_KEYSTORE_FILE }}
 
       #   - name: Decode Keystore File
       #     id: release_keystore
@@ -85,44 +88,34 @@ jobs:
           gradlePath: android/app/build.gradle
           versionCode: ${{ env.version_code }}
 
-      #   - name: Configure Keystore
-      #     run: |
-      #       echo "$ANDROID_KEYSTORE_FILE" > release.jks.b64
-      #       base64 -d -i release.jks.b64 > /home/runner/work/${{ secrets.PROJECT_NAME }}/${{ secrets.PROJECT_NAME }}/android/app/release.jks
-      #       echo "storeFile=release.jks" >> release.properties
-      #       echo "keyAlias=$ANDROID_KEY_ALIAS" >> release.properties
-      #       echo "storePassword=$ANDROID_STORE_PASSWORD" >> release.properties
-      #       echo "keyPassword=$ANDROID_KEY_PASSWORD" >> release.properties
-      #     env:
-      #       ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
-      #       ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      #       ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS}}
-      #       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-
-      #   - name: Create Google Play Config file
-      #     run: |
-      #       echo "$ANDROID_JSON_KEY_FILE" > play_config.json.b64
-      #       base64 -d -i play_config.json.b64 > play_config.json
-      #     env:
-      #       ANDROID_JSON_KEY_FILE: ${{ secrets.GPLAY_SERVICE_ACCOUNT_KEY_JSON }}
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app AAB
+        id: sign_app
+        with:
+          releaseDirectory: /home/runner/work/${{ secrets.PROJECT_NAME }}/${{ secrets.PROJECT_NAME }}/android/app/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
       - name: Build & deploy Android release
         run: cd android && bundle exec fastlane android deploy
         env:
-          ANDROID_KEYSTORE_FILE: ${{ steps.release_keystore.outputs.filePath }}
-          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS}}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          # KEYSTORE_FILE: ${{ steps.release_keystore.outputs.filePath }}
+          # STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          # KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          # KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
+          ANDROID_SIGNED_AAB: ${{ steps.sign_app.outputs.signedReleaseFile }}
 
-    #   - run: echo "${{ secrets.PROJECT_NAME }}-Android build has been successfully deployed to Play store 🎉"
-    #   - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
-    #   - name: Notify deploy to Rollbar
-    #     uses: rollbar/github-deploy-action@2.1.1
-    #     id: rollbar_deploy
-    #     with:
-    #       environment: 'test'
-    #       version: ${{ github.sha }}
-    #     env:
-    #       ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
-    #       ROLLBAR_USERNAME: ${{ github.actor }}
+      - run: echo "${{ secrets.PROJECT_NAME }}-Android build has been successfully deployed to Play store 🎉"
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Notify deploy to Rollbar
+        uses: rollbar/github-deploy-action@2.1.1
+        id: rollbar_deploy
+        with:
+          environment: "test"
+          version: ${{ github.sha }}
+        env:
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          ROLLBAR_USERNAME: ${{ github.actor }}

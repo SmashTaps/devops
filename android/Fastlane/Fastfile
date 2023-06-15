@@ -18,19 +18,19 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    # increment_version_code('app_project_dir': './andriod/app')
+    # increment_version_code('app_project_dir': '/home/runner/work/RNCICDDemo/RNCICDDemo/android/app')
 
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      print_command: false,
-      properties: {
-        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
-        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"]
-      }
-    )
+    # gradle(
+    #   task: "bundle",
+    #   build_type: "Release",
+    #   print_command: false,
+    #   properties: {
+    #     "android.injected.signing.store.file" => ENV["KEYSTORE_FILE"],
+    #     "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+    #     "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+    #     "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+    #   }
+    # )
 
     upload_to_play_store(
       json_key: ENV["ANDROID_JSON_KEY_FILE"],
@@ -40,6 +40,7 @@ platform :android do
       skip_upload_images: true,
       skip_upload_screenshots: true,
       skip_upload_apk: true,
+      aab: ENV["ANDROID_SIGNED_AAB"]
     )
   end
 end
