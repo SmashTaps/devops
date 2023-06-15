@@ -18,9 +18,11 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do
+    # increment_version_code('app_project_dir': './andriod/app')
+
     gradle(
       task: "bundle",
-      build_type: "release",
+      build_type: "Release",
       print_command: false,
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
@@ -37,6 +39,7 @@ platform :android do
       skip_upload_changelogs: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      skip_upload_apk: true,
     )
   end
 end
