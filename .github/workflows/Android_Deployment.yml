@@ -1,0 +1,91 @@
+name: Continus Deployment To Play Store
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  beta-distribution:
+    runs-on: ubuntu-latest
+    name: Continus Deployment
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+    - uses: c-hive/gha-yarn-cache@v1
+
+    - name: Bump version
+      uses: chkfung/android-version-actions@v1.2.1
+      with:
+          gradlePath: android/app/build.gradle
+          versionCode: ${{github.run_number}}
+          versionName: "1.1.1"
+  
+    - name: Install node modules
+      run: |
+        yarn install
+        
+    - name: Run test
+      run: |
+        yarn test
+        
+    - name: Cache Gradle Wrapper
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-caches-
+          
+    - name: Make Gradlew Executable
+      run: cd android && chmod +x ./gradlew
+
+    - name: Build Android App Bundle
+      run: |
+        cd android && ./gradlew bundleRelease --no-daemon
+        
+    - name: Sign App Bundle
+      id: sign_app
+      uses: r0adkll/sign-android-release@v1
+      with:
+        releaseDirectory: android/app/build/outputs/bundle/release
+        signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+        alias: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+        keyStorePassword: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+        keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Signed App Bundle
+        path: ${{steps.sign_app.outputs.signedReleaseFile}}
+
+    - name: Deploy to Play Store
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
+        packageName: com.cicdpoc
+        releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+        track: internal
+        status: draft
+        inAppUpdatePriority: 2
+    
+    - run: echo "🎉 Deployment Success."
+    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+    - name: Notify deploy to Rollbar
+      uses: rollbar/github-deploy-action@2.1.1
+      id: rollbar_deploy
+      with:
+          environment: 'test'
+          version: ${{ github.sha }}
+      env:
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          ROLLBAR_USERNAME: ${{ github.actor }}
