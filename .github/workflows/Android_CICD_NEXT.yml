@@ -1,0 +1,121 @@
+name: Android_CICD_NEXT
+on:
+  push:
+    branches:
+      - next
+
+jobs:
+  deploy:
+    name: Deploying to Play Store
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          yarn install
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          working-directory: "android"
+
+      - name: Install Fastlane
+        run: |
+          bundle install
+          bundle update fastlane
+
+      - name: Decode Service Account Key JSON File
+        uses: timheuer/base64-to-file@v1.2
+        id: service_account_json_file
+        with:
+          fileName: "serviceAccount.json"
+          encodedString: ${{ secrets.GPLAY_SERVICE_ACCOUNT_KEY_JSON }}
+
+      #   - name: Generate private-decoded-key.json file
+      #     run: echo ${{ secrets.GPLAY_SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > /home/runner/work/${{ secrets.PROJECT_NAME }}/${{ secrets.PROJECT_NAME }}/service_account_key.json
+
+      # - name: Decode Keystore File
+      #   uses: timheuer/base64-to-file@v1.2
+      #   id: release_keystore
+      #   with:
+      #     fileName: 'keystore.jks'
+      #     encodedString: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+
+      #   - name: Decode Keystore File
+      #     id: release_keystore
+      #     run: echo ${{ secrets.ANDROID_KEYSTORE_FILE }} | base64 -d > keystore.jks
+
+      #   - name: Get file path
+      #     id: path
+      #     run: |
+      #       echo "::set-output name=path::$(realpath keystore.jks)"
+
+      #   - name: Use file path
+      #     run: |
+      #       echo "Decoded file path: ${{ steps.path.outputs.path }}"
+
+      - name: Define version code with offset
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          INITIAL_VERSION_CODE: 73
+        run: |
+          VERSION_CODE=$((INITIAL_VERSION_CODE + RUN_NUMBER))
+          echo "version_code=$VERSION_CODE" >> $GITHUB_ENV
+
+      - name: Update version code
+        uses: chkfung/android-version-actions@v1.1
+        with:
+          gradlePath: android/app/build.gradle
+          versionCode: ${{ env.version_code }}
+
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app AAB
+        id: sign_app
+        with:
+          releaseDirectory: /home/runner/work/${{ secrets.PROJECT_NAME }}/${{ secrets.PROJECT_NAME }}/android/app/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Build & deploy Android release
+        run: cd android && bundle exec fastlane android deploy
+        env:
+          # KEYSTORE_FILE: ${{ steps.release_keystore.outputs.filePath }}
+          # STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          # KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          # KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
+          ANDROID_SIGNED_AAB: ${{ steps.sign_app.outputs.signedReleaseFile }}
+
+      - run: echo "${{ secrets.PROJECT_NAME }}-Android build has been successfully deployed to Play store 🎉"
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Notify deploy to Rollbar
+        uses: rollbar/github-deploy-action@2.1.1
+        id: rollbar_deploy
+        with:
+          environment: "test"
+          version: ${{ github.sha }}
+        env:
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          ROLLBAR_USERNAME: ${{ github.actor }}
